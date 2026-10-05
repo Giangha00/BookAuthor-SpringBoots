@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(${pageTitle})}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header}"></header>
+<main id="content" class="container narrow">
+    <div th:replace="~{fragments/layout :: alerts}"></div>
+    <h1 th:text="${pageTitle}">Thêm tác giả</h1>
+    <form class="card" th:action="@{/authors}" th:object="${authorForm}" method="post">
+        <input type="hidden" th:field="*{id}">
+        <label for="name">Tên</label>
+        <input id="name" type="text" th:field="*{name}" th:classappend="${#fields.hasErrors('name')} ? 'invalid'" required>
+        <p class="field-error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+
+        <label for="email">Email</label>
+        <input id="email" type="email" th:field="*{email}" th:classappend="${#fields.hasErrors('email')} ? 'invalid'" required>
+        <p class="field-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+
+        <label for="bio">Tiểu sử</label>
+        <textarea id="bio" rows="5" th:field="*{bio}" th:classappend="${#fields.hasErrors('bio')} ? 'invalid'"></textarea>
+        <p class="hint">Để trống nếu tác giả chưa có hồ sơ. Khi lưu, tiểu sử được ghi vào hồ sơ tác giả.</p>
+        <p class="field-error" th:if="${#fields.hasErrors('bio')}" th:errors="*{bio}"></p>
+
+        <div class="form-actions">
+            <button type="submit" class="btn">Lưu</button>
+            <a th:href="@{/authors}">Hủy</a>
+        </div>
+    </form>
+</main>
+</body>
+</html>

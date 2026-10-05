@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(${pageTitle})}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header}"></header>
+<main id="content" class="container narrow">
+    <div th:replace="~{fragments/layout :: alerts}"></div>
+    <h1 th:text="${pageTitle}">Thêm sách</h1>
+    <form class="card" th:action="@{/books}" th:object="${bookForm}" method="post">
+        <input type="hidden" th:field="*{id}">
+        <label for="name">Tên sách</label>
+        <input id="name" type="text" th:field="*{name}" th:classappend="${#fields.hasErrors('name')} ? 'invalid'" required>
+        <p class="field-error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+
+        <label for="description">Mô tả</label>
+        <textarea id="description" rows="5" th:field="*{description}" th:classappend="${#fields.hasErrors('description')} ? 'invalid'"></textarea>
+        <p class="field-error" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></p>
+
+        <label for="publisherId">Nhà xuất bản</label>
+        <select id="publisherId" th:field="*{publisherId}" th:classappend="${#fields.hasErrors('publisherId')} ? 'invalid'" required>
+            <option value="">Chọn nhà xuất bản</option>
+            <option th:each="publisher : ${publishers}" th:value="${publisher.id}" th:text="${publisher.name}">NXB</option>
+        </select>
+        <p class="field-error" th:if="${#fields.hasErrors('publisherId')}" th:errors="*{publisherId}"></p>
+        <p class="hint" th:if="${publishers.isEmpty()}">Chưa có nhà xuất bản. <a th:href="@{/publishers/new}">Thêm nhà xuất bản</a> trước khi lưu sách.</p>
+
+        <fieldset>
+            <legend>Tác giả</legend>
+            <p class="hint" th:if="${authors.isEmpty()}">Chưa có tác giả. Có thể lưu sách rồi gắn tác giả sau, hoặc <a th:href="@{/authors/new}">thêm tác giả</a>.</p>
+            <ul class="checks">
+                <li th:each="author : ${authors}">
+                    <input type="checkbox" th:field="*{authorIds}" th:value="${author.id}">
+                    <label th:for="${#ids.prev('authorIds')}" th:text="${author.name}">Tác giả</label>
+                </li>
+            </ul>
+        </fieldset>
+
+        <div class="form-actions">
+            <button type="submit" class="btn">Lưu</button>
+            <a th:href="@{/books}">Hủy</a>
+        </div>
+    </form>
+</main>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(${pageTitle})}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header}"></header>
+<main id="content" class="container">
+    <div th:replace="~{fragments/layout :: alerts}"></div>
+    <section class="hero">
+        <p class="eyebrow">Quản lý sách</p>
+        <h1>Sách, tác giả và nhà xuất bản</h1>
+        <p class="lead">Theo dõi đầu sách, người viết và nơi xuất bản trong cùng một thư viện.</p>
+    </section>
+
+    <section class="stats" aria-label="Thống kê">
+        <a class="stat" th:href="@{/books}">
+            <span th:text="${bookCount}">0</span>
+            <small>Sách</small>
+        </a>
+        <a class="stat" th:href="@{/authors}">
+            <span th:text="${authorCount}">0</span>
+            <small>Tác giả</small>
+        </a>
+        <a class="stat" th:href="@{/publishers}">
+            <span th:text="${publisherCount}">0</span>
+            <small>Nhà xuất bản</small>
+        </a>
+    </section>
+
+    <section class="panel">
+        <div class="panel-head">
+            <h2>Sách mới thêm</h2>
+            <a class="btn" th:href="@{/books/new}">Thêm sách</a>
+        </div>
+        <p class="empty" th:if="${books.isEmpty()}">Chưa có sách nào.</p>
+        <ul class="recent" th:if="${!books.isEmpty()}">
+            <li th:each="book : ${books}">
+                <a th:href="@{/books/{id}(id=${book.id})}" th:text="${book.name}">Tên sách</a>
+                <span th:text="${book.publisher != null ? book.publisher.name : 'Chưa có nhà xuất bản'}">NXB</span>
+            </li>
+        </ul>
+    </section>
+</main>
+</body>
+</html>

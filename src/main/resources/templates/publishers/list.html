@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(${pageTitle})}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header}"></header>
+<main id="content" class="container">
+    <div th:replace="~{fragments/layout :: alerts}"></div>
+    <div class="panel-head">
+        <h1>Nhà xuất bản</h1>
+        <a class="btn" th:href="@{/publishers/new}">Thêm nhà xuất bản</a>
+    </div>
+    <form class="search" th:action="@{/publishers}" method="get">
+        <label for="q">Tìm theo tên</label>
+        <input id="q" type="search" name="q" th:value="${keyword}" placeholder="Nhập tên nhà xuất bản">
+        <button type="submit">Tìm</button>
+    </form>
+    <p class="empty" th:if="${publishers.isEmpty()}">Không có nhà xuất bản phù hợp.</p>
+    <div class="table-wrap" th:if="${!publishers.isEmpty()}">
+        <table>
+            <thead>
+            <tr>
+                <th>Tên</th>
+                <th>Số sách</th>
+                <th>Thao tác</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="publisher : ${publishers}">
+                <td><a th:href="@{/publishers/{id}(id=${publisher.id})}" th:text="${publisher.name}">Tên</a></td>
+                <td th:text="${bookCounts[publisher.id] != null ? bookCounts[publisher.id] : 0}">0</td>
+                <td class="actions">
+                    <a th:href="@{/publishers/{id}/edit(id=${publisher.id})}">Sửa</a>
+                    <form th:action="@{/publishers/{id}/delete(id=${publisher.id})}" method="post" onsubmit="return confirm('Xóa nhà xuất bản này?');">
+                        <button type="submit" class="link danger">Xóa</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+</body>
+</html>

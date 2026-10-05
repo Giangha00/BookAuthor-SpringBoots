@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(${pageTitle})}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header}"></header>
+<main id="content" class="container narrow">
+    <div th:replace="~{fragments/layout :: alerts}"></div>
+    <p class="eyebrow">Nhà xuất bản</p>
+    <h1 th:text="${publisher.name}">Tên</h1>
+    <h2>Sách đã xuất bản</h2>
+    <p class="empty" th:if="${books.isEmpty()}">Chưa có sách nào.</p>
+    <ul class="recent" th:if="${!books.isEmpty()}">
+        <li th:each="book : ${books}">
+            <a th:href="@{/books/{id}(id=${book.id})}" th:text="${book.name}">Sách</a>
+        </li>
+    </ul>
+    <div class="form-actions">
+        <a class="btn" th:href="@{/publishers/{id}/edit(id=${publisher.id})}">Sửa</a>
+        <form th:action="@{/publishers/{id}/delete(id=${publisher.id})}" method="post" onsubmit="return confirm('Xóa nhà xuất bản này?');">
+            <button type="submit" class="btn danger">Xóa</button>
+        </form>
+        <a th:href="@{/publishers}">Quay lại danh sách</a>
+    </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(${pageTitle})}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header}"></header>
+<main id="content" class="container">
+    <div th:replace="~{fragments/layout :: alerts}"></div>
+    <div class="panel-head">
+        <h1>Tác giả</h1>
+        <a class="btn" th:href="@{/authors/new}">Thêm tác giả</a>
+    </div>
+    <form class="search" th:action="@{/authors}" method="get">
+        <label for="q">Tìm theo tên</label>
+        <input id="q" type="search" name="q" th:value="${keyword}" placeholder="Nhập tên tác giả">
+        <button type="submit">Tìm</button>
+    </form>
+    <p class="empty" th:if="${authors.isEmpty()}">Không có tác giả phù hợp.</p>
+    <div class="table-wrap" th:if="${!authors.isEmpty()}">
+        <table>
+            <thead>
+            <tr>
+                <th>Tên</th>
+                <th>Email</th>
+                <th>Số sách</th>
+                <th>Tiểu sử</th>
+                <th>Thao tác</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="author : ${authors}">
+                <td><a th:href="@{/authors/{id}(id=${author.id})}" th:text="${author.name}">Tên</a></td>
+                <td th:text="${author.email}">email</td>
+                <td th:text="${author.books != null ? author.books.size() : 0}">0</td>
+                <td th:text="${author.authorProfile != null ? 'Đã có' : 'Chưa có'}">Chưa có</td>
+                <td class="actions">
+                    <a th:href="@{/authors/{id}/edit(id=${author.id})}">Sửa</a>
+                    <form th:action="@{/authors/{id}/delete(id=${author.id})}" method="post" onsubmit="return confirm('Xóa tác giả này? Các sách vẫn được giữ lại.');">
+                        <button type="submit" class="link danger">Xóa</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+</body>
+</html>

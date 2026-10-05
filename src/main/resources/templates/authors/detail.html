@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(${pageTitle})}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header}"></header>
+<main id="content" class="container narrow">
+    <div th:replace="~{fragments/layout :: alerts}"></div>
+    <p class="eyebrow">Tác giả</p>
+    <h1 th:text="${author.name}">Tên</h1>
+    <dl class="detail">
+        <div>
+            <dt>Email</dt>
+            <dd><a th:href="'mailto:' + ${author.email}" th:text="${author.email}">email</a></dd>
+        </div>
+        <div>
+            <dt>Tiểu sử</dt>
+            <dd th:text="${author.authorProfile != null ? author.authorProfile.bio : 'Chưa có tiểu sử'}">Tiểu sử</dd>
+        </div>
+        <div>
+            <dt>Sách</dt>
+            <dd>
+                <span th:if="${author.books == null or author.books.isEmpty()}">Chưa có sách</span>
+                <ul th:if="${author.books != null and !author.books.isEmpty()}">
+                    <li th:each="book : ${author.books}">
+                        <a th:href="@{/books/{id}(id=${book.id})}" th:text="${book.name}">Sách</a>
+                    </li>
+                </ul>
+            </dd>
+        </div>
+    </dl>
+    <div class="form-actions">
+        <a class="btn" th:href="@{/authors/{id}/edit(id=${author.id})}">Sửa</a>
+        <form th:action="@{/authors/{id}/delete(id=${author.id})}" method="post" onsubmit="return confirm('Xóa tác giả này? Các sách vẫn được giữ lại.');">
+            <button type="submit" class="btn danger">Xóa</button>
+        </form>
+        <a th:href="@{/authors}">Quay lại danh sách</a>
+    </div>
+</main>
+</body>
+</html>

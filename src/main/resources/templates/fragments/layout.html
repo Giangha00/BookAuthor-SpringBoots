@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${title}">Thư viện</title>
+    <link rel="icon" th:href="@{/favicon.svg}" type="image/svg+xml">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header th:fragment="header">
+    <a class="skip" href="#content">Đi tới nội dung</a>
+    <div class="topbar">
+        <a class="brand" th:href="@{/}">Thư viện</a>
+        <nav aria-label="Chính">
+            <a th:href="@{/}"
+               th:classappend="${currentPath == '/'} ? 'active'"
+               th:attr="aria-current=${currentPath == '/'} ? 'page' : null">Trang chủ</a>
+            <a th:href="@{/books}"
+               th:classappend="${currentPath != null and currentPath.startsWith('/books')} ? 'active'"
+               th:attr="aria-current=${currentPath != null and currentPath.startsWith('/books')} ? 'page' : null">Sách</a>
+            <a th:href="@{/authors}"
+               th:classappend="${currentPath != null and currentPath.startsWith('/authors')} ? 'active'"
+               th:attr="aria-current=${currentPath != null and currentPath.startsWith('/authors')} ? 'page' : null">Tác giả</a>
+            <a th:href="@{/publishers}"
+               th:classappend="${currentPath != null and currentPath.startsWith('/publishers')} ? 'active'"
+               th:attr="aria-current=${currentPath != null and currentPath.startsWith('/publishers')} ? 'page' : null">Nhà xuất bản</a>
+        </nav>
+    </div>
+</header>
+
+<div th:fragment="alerts" class="alerts" th:if="${success != null or error != null}">
+    <p class="alert success" th:if="${success}" th:text="${success}" role="status"></p>
+    <p class="alert error" th:if="${error}" th:text="${error}" role="alert"></p>
+</div>
+</body>
+</html>

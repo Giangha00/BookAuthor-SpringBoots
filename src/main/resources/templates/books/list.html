@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(${pageTitle})}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header}"></header>
+<main id="content" class="container">
+    <div th:replace="~{fragments/layout :: alerts}"></div>
+    <div class="panel-head">
+        <h1>Sách</h1>
+        <a class="btn" th:href="@{/books/new}">Thêm sách</a>
+    </div>
+    <form class="search" th:action="@{/books}" method="get">
+        <label for="q">Tìm theo tên</label>
+        <input id="q" type="search" name="q" th:value="${keyword}" placeholder="Nhập tên sách">
+        <button type="submit">Tìm</button>
+    </form>
+    <p class="empty" th:if="${books.isEmpty()}">Không có sách phù hợp.</p>
+    <div class="table-wrap" th:if="${!books.isEmpty()}">
+        <table>
+            <thead>
+            <tr>
+                <th>Tên sách</th>
+                <th>Nhà xuất bản</th>
+                <th>Tác giả</th>
+                <th>Thao tác</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="book : ${books}">
+                <td><a th:href="@{/books/{id}(id=${book.id})}" th:text="${book.name}">Tên</a></td>
+                <td>
+                    <a th:if="${book.publisher != null}" th:href="@{/publishers/{id}(id=${book.publisher.id})}" th:text="${book.publisher.name}">NXB</a>
+                    <span th:if="${book.publisher == null}">—</span>
+                </td>
+                <td>
+                    <span th:if="${book.authors == null or book.authors.isEmpty()}">—</span>
+                    <span th:each="author, stat : ${book.authors}">
+                        <a th:href="@{/authors/{id}(id=${author.id})}" th:text="${author.name}">Tác giả</a><span th:if="${!stat.last}">, </span>
+                    </span>
+                </td>
+                <td class="actions">
+                    <a th:href="@{/books/{id}/edit(id=${book.id})}">Sửa</a>
+                    <form th:action="@{/books/{id}/delete(id=${book.id})}" method="post" onsubmit="return confirm('Xóa sách này?');">
+                        <button type="submit" class="link danger">Xóa</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+</body>
+</html>

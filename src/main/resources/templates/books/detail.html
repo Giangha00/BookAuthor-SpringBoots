@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(${pageTitle})}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header}"></header>
+<main id="content" class="container narrow">
+    <div th:replace="~{fragments/layout :: alerts}"></div>
+    <p class="eyebrow">Sách</p>
+    <h1 th:text="${book.name}">Tên sách</h1>
+    <dl class="detail">
+        <div>
+            <dt>Nhà xuất bản</dt>
+            <dd>
+                <a th:if="${book.publisher != null}" th:href="@{/publishers/{id}(id=${book.publisher.id})}" th:text="${book.publisher.name}">NXB</a>
+                <span th:if="${book.publisher == null}">Chưa có</span>
+            </dd>
+        </div>
+        <div>
+            <dt>Tác giả</dt>
+            <dd>
+                <span th:if="${book.authors == null or book.authors.isEmpty()}">Chưa gắn tác giả</span>
+                <ul th:if="${book.authors != null and !book.authors.isEmpty()}">
+                    <li th:each="author : ${book.authors}">
+                        <a th:href="@{/authors/{id}(id=${author.id})}" th:text="${author.name}">Tác giả</a>
+                    </li>
+                </ul>
+            </dd>
+        </div>
+        <div>
+            <dt>Mô tả</dt>
+            <dd th:text="${book.description != null and !#strings.isEmpty(book.description) ? book.description : 'Chưa có mô tả'}">Mô tả</dd>
+        </div>
+    </dl>
+    <div class="form-actions">
+        <a class="btn" th:href="@{/books/{id}/edit(id=${book.id})}">Sửa</a>
+        <form th:action="@{/books/{id}/delete(id=${book.id})}" method="post" onsubmit="return confirm('Xóa sách này?');">
+            <button type="submit" class="btn danger">Xóa</button>
+        </form>
+        <a th:href="@{/books}">Quay lại danh sách</a>
+    </div>
+</main>
+</body>
+</html>
