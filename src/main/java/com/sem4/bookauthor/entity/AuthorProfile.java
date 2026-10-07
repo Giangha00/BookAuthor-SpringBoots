@@ -15,7 +15,7 @@ public class AuthorProfile {
     @Column(nullable = false)
     private String bio;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "author_id", nullable = false)
     private Author author;
 }

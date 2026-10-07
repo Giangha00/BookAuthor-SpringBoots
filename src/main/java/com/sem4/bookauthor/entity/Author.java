@@ -24,6 +24,6 @@ public class Author {
     @ManyToMany(mappedBy = "authors")
     private List<Book> books;
 
-    @OneToOne(mappedBy = "author", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "author", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private AuthorProfile authorProfile;
 }
