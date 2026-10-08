@@ -7,6 +7,9 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
+@NamedEntityGraph(name = "AuthorProfile.withAuthor", attributeNodes = {
+        @NamedAttributeNode("author")
+})
 public class AuthorProfile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

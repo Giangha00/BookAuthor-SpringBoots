@@ -10,6 +10,10 @@ import java.util.List;
 @Table(name = "authors")
 @Getter
 @Setter
+@NamedEntityGraph(name = "Author.full", attributeNodes = {
+        @NamedAttributeNode("authorProfile"),
+        @NamedAttributeNode("books")
+})
 public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

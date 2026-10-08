@@ -11,19 +11,23 @@ import java.util.Optional;
 public interface BookRepository extends JpaRepository<Book, Long> {
 
     @Override
-    @EntityGraph(attributePaths = {"publisher", "authors"})
+    @EntityGraph(attributePaths = { "publisher", "authors" })
     Optional<Book> findById(Long id);
 
-    @EntityGraph(attributePaths = {"publisher", "authors"})
+    @Override
+    @EntityGraph(attributePaths = { "publisher", "authors" })
+    List<Book> findAll();
+
+    @EntityGraph(attributePaths = { "publisher", "authors" })
     List<Book> findAllByOrderByIdDesc();
 
-    @EntityGraph(attributePaths = {"publisher", "authors"})
+    @EntityGraph(attributePaths = { "publisher", "authors" })
     List<Book> findByNameContainingIgnoreCaseOrderByIdDesc(String name);
 
-    @EntityGraph(attributePaths = "authors")
+    @EntityGraph(attributePaths = { "publisher", "authors" })
     List<Book> findByAuthorsId(Long authorId);
 
-    @EntityGraph(attributePaths = "authors")
+    @EntityGraph(attributePaths = { "publisher", "authors" })
     List<Book> findByPublisherIdOrderByIdDesc(Long publisherId);
 
     long countByPublisherId(Long publisherId);

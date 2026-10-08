@@ -9,6 +9,9 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@NamedEntityGraph(name = "Publisher.withBooks", attributeNodes = {
+        @NamedAttributeNode("books")
+})
 public class Publisher {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

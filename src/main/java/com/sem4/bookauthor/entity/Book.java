@@ -10,6 +10,10 @@ import java.util.List;
 @Table(name = "books")
 @Getter
 @Setter
+@NamedEntityGraph(name = "Book.full", attributeNodes = {
+        @NamedAttributeNode("publisher"),
+        @NamedAttributeNode("authors")
+})
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,15 +24,11 @@ public class Book {
 
     private String description;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "publisher_id", nullable = false)
     private Publisher publisher;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-        name = "book_author",
-        joinColumns = @JoinColumn(name = "book_id"),
-        inverseJoinColumns = @JoinColumn(name = "author_id")
-    )
+    @JoinTable(name = "book_author", joinColumns = @JoinColumn(name = "book_id"), inverseJoinColumns = @JoinColumn(name = "author_id"))
     private List<Author> authors;
 }
